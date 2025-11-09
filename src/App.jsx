@@ -10,14 +10,6 @@ const App = () => {
     const updatedAnecdote = { ...anecdote, votes: anecdote.votes + 1 }
     updateAnecdoteMutation.mutate(updatedAnecdote)
   }
-
-  const newAnecdoteMutation = useMutation({
-    mutationFn: createAnecdote,
-    onSuccess: (newAnecdote) => {
-      const notes = queryClient.getQueryData(['anecdotes'])
-      queryClient.setQueryData(['anecdotes'], notes.concat(newAnecdote))
-    }
-  })
   
 
   const updateAnecdoteMutation = useMutation({
@@ -26,13 +18,6 @@ const App = () => {
       queryClient.invalidateQueries({ queryKey: ['anecdote'] })
     }
   })
-
-  const addAnecdote = async (event) => {
-    event.preventDefault()
-    const content = event.target.anecdote.value
-    event.target.anecdote.value = ''
-    newAnecdoteMutation.mutate({ content, votes: 0 })
-  }
 
   const result = useQuery({
     queryKey: ['anecdotes'],
